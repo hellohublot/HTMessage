@@ -1,0 +1,6 @@
+use_frameworks!
+target 'HTMessage_Tests' do
+  pod 'HTMessage', :path => '../'
+  
+  
+end
