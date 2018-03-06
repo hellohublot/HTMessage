@@ -1,0 +1,6 @@
+framework module HTMessage {
+  umbrella header "HTMessage-umbrella.h"
+
+  export *
+  module * { export * }
+}

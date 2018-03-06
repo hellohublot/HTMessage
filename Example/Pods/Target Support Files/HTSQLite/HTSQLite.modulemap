@@ -1,0 +1,6 @@
+framework module HTSQLite {
+  umbrella header "HTSQLite-umbrella.h"
+
+  export *
+  module * { export * }
+}
