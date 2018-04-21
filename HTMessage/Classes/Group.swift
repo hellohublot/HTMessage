@@ -135,7 +135,7 @@ open class Group {
 		let selfclass = type(of: self)
 		selfclass.messageQueue.async {
 			let index = self.lastInsertList.count
-			let result = self.sqlite.execute(SQLBind.init("select max(id) from message where identifier = '\(identifier)'"))
+			let result = self.sqlite.execute("select max(id) from message where identifier = '\(identifier)'")
 			if let first = result?.first, let count = first["max(id)"], let id = Int(count) {
 				self.lastInsertList.append(id)
 			} else {
@@ -143,7 +143,7 @@ open class Group {
 			}
 			let rehandler: MessageHandler = { identifier, _ in
 				let last = String(self.lastInsertList[index] ?? self.defaultMinInsert)
-				let result = self.sqlite.execute(SQLBind.init("select id, message from message where identifier = '\(identifier)' and id > \(last)")) ?? [[String: String]]()
+				let result = self.sqlite.execute("select id, message from message where identifier = '\(identifier)' and id > \(last)") ?? [[String: String]]()
 				for row in result {
 					guard let count = row["id"], let id = Int(count), let message = row["message"]  else {
 						continue
@@ -159,10 +159,8 @@ open class Group {
 	}
 	
 	open func clear() {
-		type(of: self).messageQueue.async {
-			self.sqlite.execute(SQLBind.init("delete from message"))
-			self.lastInsertList.removeAll()
-		}
+		self.sqlite.execute(SQLBind.init("delete from message"))
+		self.lastInsertList.removeAll()
 	}
 	
 }
